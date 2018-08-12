@@ -1,0 +1,42 @@
+[
+{
+    "grant_type_value":"password",
+      "username-value": "admin",
+      "password_value": "password",
+	"list":"{\n\"graphql\":\"id,name,percentage\"\n}",
+  	"create_entity":"{\"name\": \"test-taxdata\",\n \"percentage\": 10\n}",
+	"get_entity":"{\n\"graphql\":\"id,name,percentage\"\n}",
+	"graphql":"graphql=id,name,percentage",
+	"update":"{\n\"id\":{{id}},\n\"name\":\"Service Charge1\",\n\"percentage\":10\n\n}"
+    
+},
+
+{
+    
+    "grant_type_value":"password",
+      "username-value": "admin123",
+      "password_value": "password"
+    
+},
+{
+    
+    "grant_type_value":"password",
+      "username-value": "admin222",
+      "password_value": "password"
+    
+},
+{
+    
+    "grant_type_value":"password",
+      "username-value": "admin333",
+      "password_value": "password"
+    
+},
+{
+    
+    "grant_type_value":"password",
+      "username-value": "admin4444",
+      "password_value": "password"
+    
+}
+]

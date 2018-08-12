@@ -1,0 +1,565 @@
+{
+	"info": {
+		"_postman_id": "747a1658-c616-4c99-80fb-202bd691a736",
+		"name": "API-rewrite",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get/postman",
+			"description": "",
+			"item": [
+				{
+					"name": "get/postman",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5eda5b19-bb8d-4d5e-bd13-7a8affc82f01",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setGlobalVariable('postmanBDD', responseBody);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://bigstickcarpet.com/postman-bdd/dist/postman-bdd.min.js",
+							"protocol": "http",
+							"host": [
+								"bigstickcarpet",
+								"com"
+							],
+							"path": [
+								"postman-bdd",
+								"dist",
+								"postman-bdd.min.js"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "crud",
+			"description": "",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "20e47269-572f-4efa-a3ed-ae6e088b70fa",
+								"type": "text/javascript",
+								"exec": [
+									"eval(globals.postmanBDD);",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"access_token\",jsonData.access_token);",
+									"postman.setEnvironmentVariable(\"token_type\",jsonData.token_type);",
+									"",
+									"",
+									"//body asserstion",
+									"describe('assersions for body',()=>{",
+									"    it('response body should be in json format',()=>{",
+									"      response.should.be.json;",
+									"    });",
+									"    if (responseCode.code == 200){",
+									"        it('access_token should not be empty',()=>{",
+									"        response.body.access_token.should.not.null;",
+									"         });",
+									"        it('token_type in response body should not be empty',()=>{",
+									"        response.body.token_type.should.not.null;",
+									"         });",
+									"        it('refresh_token in response body should not be empty',()=>{",
+									"        response.body.refresh_token.should.not.null;",
+									"         });",
+									"        it('expires_in in response body should not be empty',()=>{",
+									"        response.body.expires_in.should.not.null;",
+									"         });",
+									"        it('expires_in in response body should be above 20000',()=>{",
+									"        response.body.expires_in.should.be.above(30000);",
+									"         });",
+									"        it('scope in response body should not be empty',()=>{",
+									"        response.body.scope.should.not.null;",
+									"         });",
+									"    ",
+									"    ",
+									"    ",
+									"    ",
+									"    }",
+									"         ",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "secret",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin_application_id",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "grant_type",
+									"value": "{{grant_type_value}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username-value}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password_value}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/usermgmt/oauth/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usermgmt",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view_list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6d53259f-b04b-4122-ac5a-933de9da9905",
+								"type": "text/javascript",
+								"exec": [
+									"eval(globals.postmanBDD);",
+									"var jsonData = JSON.parse(responseBody);",
+									"//body asserstion",
+									"",
+									"describe('assersions for body',()=>{",
+									"    it('response body should be in json format',()=>{",
+									"      response.should.be.json;",
+									"    });",
+									"    if (responseCode.code == 200){",
+									"        it('unsorted and sorted should be true and false respectively',()=>{",
+									"        response.body.sort.unsorted.should.be.true;",
+									"        response.body.sort.sorted.should.be.false;",
+									"             });",
+									"             ",
+									"    if (response.body.numberOfElements!=0)",
+									"        for(var i=0; i<response.body.numberOfElements; i++)",
+									"                   {",
+									"                       it('value of id should not be empty ',()=>{",
+									"                         response.body.content[i].id.should.not.be.null;",
+									"                        });",
+									"                      ",
+									"                }",
+									"         ",
+									"        ",
+									"        ",
+									"    }",
+									"         ",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token_type}} {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{list}}"
+						},
+						"url": {
+							"raw": "{{base_url}}/usermgmt/api/tax/page",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usermgmt",
+								"api",
+								"tax",
+								"page"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_entity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ca067a81-a6a6-45d6-a954-4d8fc241ea8f",
+								"type": "text/javascript",
+								"exec": [
+									"eval(globals.postmanBDD);",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"id\",jsonData.id);",
+									"",
+									"//body asserstion",
+									"describe('assersions for body',()=>{",
+									"    ",
+									"    if (responseCode.code == 200){",
+									"        it('valuue of id should not be null',()=>{",
+									"        response.body.id.should.not.null;",
+									"         });",
+									"    }",
+									"         ",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token_type}} {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{create_entity}}"
+						},
+						"url": {
+							"raw": "{{base_url}}/usermgmt/api/tax",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usermgmt",
+								"api",
+								"tax"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-entity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8942c0f5-cb23-42f2-9f3f-852de79aa877",
+								"type": "text/javascript",
+								"exec": [
+									"eval(globals.postmanBDD);",
+									"var jsonData = JSON.parse(responseBody);",
+									"//body asserstion",
+									"",
+									"describe('assersions for body',()=>{",
+									"    it('response body should be in json format',()=>{",
+									"      response.should.be.json;",
+									"    });",
+									"    if (responseCode.code == 200){",
+									"        it('value of id should not be empty ',()=>{",
+									"             response.body.id.should.not.be.null;",
+									"             });",
+									"    ",
+									"    }",
+									"         ",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token_type}} {{access_token}}"
+							},
+							{
+								"key": "graphql",
+								"value": "{{graphql}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"graphql\":\"id,name,percentage\"\n\t\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/usermgmt/api/tax/{{id}}?{{get_entity}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usermgmt",
+								"api",
+								"tax",
+								"{{id}}"
+							],
+							"query": [
+								{
+									"key": "{{get_entity}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "01e4e207-4568-49e2-ba85-4688f9213961",
+								"type": "text/javascript",
+								"exec": [
+									"eval(globals.postmanBDD);",
+									"var jsonData = JSON.parse(responseBody);",
+									"var id =(jsonData.id);",
+									"//body asserstion",
+									"describe('assersions for body',()=>{",
+									"    if (responseCode.code == 200){",
+									"        it('check the value of id',()=>{",
+									"        response.body.id.should.equal(id);",
+									"         });",
+									"             ",
+									"    }",
+									"         ",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_type}} {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{update}}"
+						},
+						"url": {
+							"raw": "{{base_url}}/usermgmt/api/tax/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usermgmt",
+								"api",
+								"tax",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "429daaf9-c947-435e-b4e9-1ed6c7f8e132",
+								"type": "text/javascript",
+								"exec": [
+									"eval(globals.postmanBDD);",
+									"var jsonData = JSON.parse(responseBody);",
+									"var id =(jsonData.id);",
+									"//body asserstion",
+									"describe('assersions for body',()=>{",
+									"    if (responseCode.code == 200){",
+									"        it('check the value of id',()=>{",
+									"        response.body.id.should.equal(id);",
+									"         });",
+									"             ",
+									"    }",
+									"         ",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_type}} {{access_token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{base_url}}/usermgmt/api/tax/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usermgmt",
+								"api",
+								"tax",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "41ae9d0a-1af1-4af3-b274-386ea23d8394",
+						"type": "text/javascript",
+						"exec": [
+							"eval(globals.postmanBDD);",
+							"var jsonData = JSON.parse(responseBody);",
+							"describe('assertions for response',()=>{",
+							"    it('checks response code',()=>{",
+							"      response.should.have.status(200); ",
+							"    });",
+							"    it('checks response time',()=>{",
+							"        response.time.should.be.below(1000);",
+							"    });",
+							"    ",
+							"    it('response should be in JSON format',()=>{",
+							"      response.should.be.json;",
+							"    });",
+							"    it(\"should not return a server error\",()=>{ ",
+							"        response.serverError.should.be.false; ",
+							"    });",
+							"    it(\"Send a OK response\",()=>{      ",
+							"      response.ok.should.be.true;    ",
+							"    });",
+							"    it('should not be an error response', () => {      ",
+							"        response.error.should.be.false; ",
+							"    });",
+							" ",
+							"});  ",
+							"",
+							"//assertions for headers",
+							"describe('Checks for header',()=>{",
+							"    ",
+							"    it('Access-Control-Allow-Headers should be Authorization, Content-Type',()=>{",
+							"        response.should.have.header('Access-Control-Allow-Headers',\"Authorization, Content-Type\");",
+							"    });",
+							"    ",
+							"    it('Access-Control-Allow-Methods should be PATCH, POST, PUT, GET, OPTIONS, DELETE',()=>{",
+							"        response.should.have.header('Access-Control-Allow-Methods',\"PATCH, POST, PUT, GET, OPTIONS, DELETE\");",
+							"    });",
+							"    ",
+							"    it('Access-Control-Allow-Origin should be *',()=>{",
+							"        response.should.have.header('Access-Control-Allow-Origin',\"*\");",
+							"    });",
+							"     ",
+							"    it('Access-Control-Max-Age should be 3600',()=>{",
+							"        response.should.have.header('Access-Control-Max-Age',\"3600\");",
+							"    });",
+							"    ",
+							"    it('Content-Type should be application/json;charset=UTF-8',()=>{",
+							"        response.should.have.header('Content-Type',\"application/json;charset=UTF-8\");",
+							"    });",
+							"    ",
+							"    it('Date should not be empty',()=>{",
+							"        response.should.have.header('Date').and.not.empty; ",
+							"    });",
+							"    ",
+							"    it('Transfer-Encoding should be chunked',()=>{",
+							"        response.should.have.header('Transfer-Encoding',\"chunked\");",
+							"    });",
+							"    ",
+							"});"
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "361b4a7b-cc1c-4b42-8b0f-2c11f4693272",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "05c1db89-1646-47cc-b910-7dc9f3f166f3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
